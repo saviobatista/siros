@@ -1,7 +1,6 @@
 from hashlib import md5
-import pathlib
 import csv
-from os import path, remove, removedirs, mkdir
+from os import path, remove, mkdir, getcwd
 from shutil import rmtree
 import time
 from selenium import webdriver
@@ -25,13 +24,13 @@ class SirosParser:
     
     def setup(self):
         # Cria pasta temporária para salvar o arquivo de download
-        self.downloads = path.join(str(pathlib.Path().resolve()),'tmp')
+        self.downloads = path.join(str(path.abspath(getcwd())),'tmp')
         if path.isdir(self.downloads):
-            # removedirs(self.downloads)
             rmtree(self.downloads)
         mkdir(self.downloads)
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        # BUG: Headless não permite ler a pagina de downloads do chrome, a implementar a solução
+        # options.add_argument('--headless')
         # options.add_experimental_option('detach',True)
         options.add_experimental_option('prefs',{
             'download.default_directory' : self.downloads
@@ -76,7 +75,7 @@ class SirosParser:
         #Processamento do CSV
         voos = []
         # Varre o arquivo processando os voos e coloca na lista
-        with open(path.join(str(pathlib.Path().resolve()),arquivo)) as csvfile:
+        with open(path.join(str(path.abspath(getcwd())),'tmp',arquivo)) as csvfile:
             primeiralinha = csvfile.readline()
             if md5(primeiralinha.encode()).hexdigest() != self.checksum:
                 raise 'Aparentemente houve uma mudança na versão e modelo do arquivo gerado pela ANAC'
@@ -85,5 +84,5 @@ class SirosParser:
                 voos.append(Voo(row,self.aerodromo))
         # Remove arquivo CSV se self.maintain = False
         if not self.maintain:
-            remove(path.join(str(pathlib.Path().resolve()),arquivo))
+            remove(path.join(str(path.abspath(getcwd())),'tmp',arquivo))
         return voos
