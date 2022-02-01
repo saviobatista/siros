@@ -1,6 +1,7 @@
 from hashlib import md5
 import csv
-from os import path, remove, mkdir, getcwd
+import re
+from os import path, remove, mkdir, getcwd, listdir
 from shutil import rmtree
 import time
 from selenium import webdriver
@@ -29,9 +30,7 @@ class SirosParser:
             rmtree(self.downloads)
         mkdir(self.downloads)
         options = webdriver.ChromeOptions()
-        # BUG: Headless não permite ler a pagina de downloads do chrome, a implementar a solução
-        # options.add_argument('--headless')
-        # options.add_experimental_option('detach',True)
+        options.add_argument('--headless')
         options.add_experimental_option('prefs',{
             'download.default_directory' : self.downloads
         })
@@ -58,17 +57,23 @@ class SirosParser:
         self.browser.find_element(By.ID,'MainContent_btnExportar').click()
         self.waitFor((By.ID,'MainContent_btnBaixar'))
         self.browser.find_element(By.ID,'MainContent_btnBaixar').click()
-        # Abre uma aba e rastreia o download
-        # driver.execute_script('window.open()')
-        self.browser.get('chrome://downloads')
-        time.sleep(5)
-        # Aguarda completar download no chrome quando navegador visivel
-        # BUG: Incompatível com headless mode do chrome
-        porcentagem = 0
-        while porcentagem != 100:
-            porcentagem = self.browser.execute_script("return document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList downloads-item').shadowRoot.querySelector('#progress').value")
-        #Nome do arquivo baixado
-        arquivo = self.browser.execute_script("return document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList downloads-item').shadowRoot.querySelector('div#content #file-link').text")
+
+        # No chrome, o download é realizado num arquivo temporário com final .crdownload ou tem o nome '.com.google.Chrome.*',
+        # desta forma, se o arquivo na pasta tiver este sufixo, então ainda está fazendo download
+        # e assim aguarda mais 1 segundo para verificar novamente, se não tem segue em frente
+        time.sleep(1) # Aguarda 1 segundo para iniciar varredura de pastas, ao ir direto nem sempre o download tem tempo de iniciar causando raise exception
+        aguardarDownload = True
+        while aguardarDownload:
+            files = [f for f in listdir('tmp') if path.isfile(path.join('tmp', f))]
+            if len(files) != 1:
+                raise 'A lista de arquivos na pasta temporária tem mais de 1 arquivo, não há como processar'
+
+            arquivo = files[0]
+            if not re.search("\.crdownload$", arquivo) and not re.search('\.com\.google\.Chrome\.', arquivo):
+                aguardarDownload = False # Não tem arquivo com padrão de nome temporário do chrome, já terminou e pode seguir em frente
+            else:
+                time.sleep(1) # Ainda tem um download em andamento, então aguarda 1 segundo e verifica novamente
+ 
         return self.parseCSV(arquivo)
         
     def parseCSV(self, arquivo):
