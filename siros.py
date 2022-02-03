@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from lib.previsao import Previsao
-from lib.rules import RulesPandemia
+from lib.rules import *
 from lib.siros_parser import SirosParser
 
 if __name__ == '__main__':
@@ -28,6 +28,6 @@ if __name__ == '__main__':
     previsao.dump_turno()
     # Lista HORA | ARR | DEP | TOTAL | POSIÇÕES OPERACIONAIS
     # @rules implementação da class Rules com o método test retornando uma String com as posições operacionais
-    previsao.dump_distribuicao(rules=RulesPandemia)
+    previsao.dump_distribuicao(rules=RulesBita)
     # Aguarda tecla para finalizar
     input("Pressione qualquer tecla para fechar...")
