@@ -1,21 +1,28 @@
 # SIROS Flight Movement Prediction System
 
+> **⚠️ ARCHIVED REPOSITORY**  
+> This repository is now archived as ANAC has provided official web services at [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api). Web crawling is no longer necessary for retrieving SIROS data.
+
 A Python-based web crawler and analysis system for capturing and processing flight information from Brazil's ANAC SIROS database (https://siros.anac.gov.br/). The system provides accurate flight movement predictions and operational position recommendations for air traffic control planning.
+
+**Note**: This project demonstrates web scraping techniques but is no longer actively maintained due to the availability of official ANAC APIs.
 
 ## 🎯 Features
 
-- **Automated Data Collection**: Web scraping from SIROS database using Selenium
+- **Automated Data Collection**: Web scraping from SIROS database using Selenium *(deprecated)*
 - **Flight Movement Analysis**: Hourly flight predictions with 99.2% statistical accuracy (T-5 hours)
 - **Operational Planning**: Automated position staffing recommendations based on traffic volume
 - **Flexible Scheduling**: Configurable work shifts and time periods
 - **Multiple Rule Sets**: Different operational rules for various scenarios (normal, pandemic, general)
 - **Data Validation**: Built-in integrity checks with MD5 verification
+- **Educational Value**: Demonstrates web scraping, data processing, and aviation analytics techniques
 
 ## 🚀 Key Capabilities
 
 1. **Hourly Flight Listings**: Movement forecasts by hour for any aerodrome
 2. **Shift-Based Analysis**: Flight predictions for specific work shifts
 3. **Position Planning**: Automated recommendations for operational positions based on traffic volume
+4. **Educational Demonstration**: Web scraping, data processing, and aviation analytics techniques
 
 ## 📋 Requirements
 
@@ -26,7 +33,12 @@ chrome/chromium browser
 chromedriver
 ```
 
+> **Note**: This project is archived and primarily serves as an educational example of web scraping and data processing techniques.
+
 ## 🛠️ Installation
+
+> **⚠️ ARCHIVED PROJECT**  
+> This installation guide is provided for educational purposes only. For production use, consider using the official ANAC API at [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api).
 
 1. **Clone the repository**:
 ```bash
@@ -81,6 +93,9 @@ previsao.setTurnos(turnos=[8, 20], duracao=10)
 
 ## 🚀 Usage
 
+> **⚠️ EDUCATIONAL USE ONLY**  
+> This system demonstrates web scraping techniques but is no longer recommended for production use due to the availability of official ANAC APIs.
+
 ### Basic Usage
 
 ```bash
@@ -88,8 +103,8 @@ python siros.py
 ```
 
 This will:
-1. Connect to SIROS website
-2. Download flight data for today and tomorrow
+1. Connect to SIROS website *(may fail due to website changes)*
+2. Download flight data for today and tomorrow *(or use sample data)*
 3. Generate three reports:
    - General hourly movement forecast
    - Next shift movement forecast
@@ -333,22 +348,36 @@ siros/
 
 ## ⚠️ Important Notes
 
-- **Accuracy**: 99.2% statistical accuracy for T-5 hour predictions
-- **Legal**: Ensure compliance with SIROS terms of service
-- **Rate Limiting**: Be respectful of SIROS server resources
+- **Archived Status**: This repository is archived and no longer actively maintained
+- **Official API Available**: ANAC now provides official web services at [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api)
+- **Educational Purpose**: This project demonstrates web scraping, data processing, and aviation analytics techniques
+- **Accuracy**: 99.2% statistical accuracy for T-5 hour predictions *(historical reference)*
+- **Legal**: Ensure compliance with SIROS terms of service *(when using web scraping)*
+- **Rate Limiting**: Be respectful of SIROS server resources *(when using web scraping)*
 - **Data Retention**: Configure `maintain` flag based on privacy requirements
 
 ## 📄 License
 
-This project is provided for educational and operational planning purposes. Please ensure compliance with ANAC and SIROS terms of service when using this system.
+This project is provided for **educational purposes only**. The repository is archived and no longer actively maintained. For production use, please consider using the official ANAC API at [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api).
+
+## 🔄 Migration to Official API
+
+ANAC has provided official web services that replace the need for web scraping:
+
+- **Official API**: [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api)
+- **Benefits**: More reliable, structured data, better performance
+- **Recommendation**: Use official APIs for production applications
 
 ## 🆘 Support
 
+> **⚠️ ARCHIVED REPOSITORY**  
+> This project is no longer actively maintained. For current support:
+
 For issues related to:
-- **SIROS website changes**: Check ANAC announcements
-- **Technical problems**: Review logs and error messages
-- **Operational questions**: Consult local ATC procedures
+- **Official API**: Contact ANAC through [https://sas.anac.gov.br/sas/siros_api](https://sas.anac.gov.br/sas/siros_api)
+- **Educational questions**: Review the code for learning web scraping techniques
+- **Historical reference**: This project demonstrates aviation data processing methods
 
 ---
 
-**Statistical Accuracy**: 99.2% for T-5 hour predictions based on historical validation data.
+**Statistical Accuracy**: 99.2% for T-5 hour predictions based on historical validation data *(archived reference)*.
