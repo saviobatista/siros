@@ -3,7 +3,8 @@ from lib.previsao import Previsao
 from lib.rules import *
 from lib.siros_parser import SirosParser
 
-if __name__ == '__main__':
+def main():
+    """Main entry point for the SIROS application."""
     aerodromo = 'SBKP' # Aerodromo a ser processado
     # Na criação do objeto o parametro aerodromo trata do objeto de referencia para definir as partidas e chegadas
     robot = SirosParser(aerodromo)
@@ -11,9 +12,14 @@ if __name__ == '__main__':
     # evite definir False para o modelo ou o mesmo será removido
     robot.maintain = False
     # begin e end são os períodos de pesquisa, para calculo da escala do turno o recomendável é iniciar hoje e terminar amanhã
-    voos = robot.parse(begin=datetime.now().strftime('%d/%m/%Y'),end=(datetime.now() + timedelta(days=1)).strftime('%d/%m/%Y'))
-    # Caso queira apenas testar o processamento do CSV, há um modelo de arquivo para testes e chama o método parseCSV
-    # voos = robot.parseCSV('modelo.csv')
+    try:
+        print("🌐 Attempting to fetch data from SIROS website...")
+        voos = robot.parse(begin=datetime.now().strftime('%d/%m/%Y'),end=(datetime.now() + timedelta(days=1)).strftime('%d/%m/%Y'))
+    except Exception as e:
+        print(f"❌ Failed to fetch from SIROS: {e}")
+        print("📁 Falling back to sample data for demonstration...")
+        # Caso queira apenas testar o processamento do CSV, há um modelo de arquivo para testes e chama o método parseCSV
+        voos = robot.parseCSV('modelo.csv')
     # Tratamento da previsão de movimentos
     previsao = Previsao(aerodromo)
     # Turnos de serviço em 2 parametros:
@@ -31,3 +37,7 @@ if __name__ == '__main__':
     previsao.dump_distribuicao(rules=RulesBita)
     # Aguarda tecla para finalizar
     input("Pressione qualquer tecla para fechar...")
+
+
+if __name__ == '__main__':
+    main()
